@@ -1,3 +1,25 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+input.invalid,
+input.invalid:focus,
+select.invalid,
+select.invalid:focus {
+    background-color: #fef2f2;
+    border-color: #dc2626;
+    color: oklch(.266 .079 36.259);
+    box-shadow: 0 0 0 oklch(.266 .079 36.259);
+}
+
+input.invalid + label.invalid,
+select.invalid + label.invalid {
+    color: #f43300;
+    font-size: 0.7rem;
+    font-weight: bold;
+    letter-spacing: 1px;
+    position: absolute;
+    right: 1%;
+    text-transform: uppercase;
+    top: 58%;
+}

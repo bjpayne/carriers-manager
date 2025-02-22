@@ -4,9 +4,6 @@ namespace Database\Seeders;
 
 use App\Models\CarrierCoverages;
 use App\Models\Carriers;
-use App\Models\User;
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
-use Database\Factories\CarrierCoveragesFactory;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -30,5 +27,9 @@ class DatabaseSeeder extends Seeder
                     ->sequence(['coverage' => 'Auto'], ['coverage' => 'Home'], ['coverage' => 'Life'])
             )
             ->createMany(100);
+
+        $this->call([
+            States::class,
+        ]);
     }
 }

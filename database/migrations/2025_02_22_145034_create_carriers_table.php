@@ -27,6 +27,8 @@ return new class extends Migration
                 ->nullable(false);
             $table->string('zip')
                 ->nullable(false);
+            $table->string('phone')
+                ->nullable(false);
             $table->longText('notes')
                 ->nullable();
             $table->string('lat')

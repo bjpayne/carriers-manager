@@ -48,6 +48,7 @@ class CarriersFactory extends Factory
             'city' => $this->faker->city(),
             'state' => $this->faker->stateAbbr(),
             'zip' => $this->faker->postcode(),
+            'phone' =>  $this->faker->regexify('[0-9]{3}-[0-9]{3}-[0-9]{4}'),
         ];
 
         $coordinates = $this->geoCoder

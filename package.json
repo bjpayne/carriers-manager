@@ -16,6 +16,9 @@
         "vite": "^6.0.11"
     },
     "dependencies": {
-        "flowbite": "^3.1.2"
+        "flowbite": "^3.1.2",
+        "jquery": "^3.7.1",
+        "jquery-mask-plugin": "^1.14.16",
+        "jquery-validation": "^1.21.0"
     }
 }

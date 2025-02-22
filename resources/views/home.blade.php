@@ -11,7 +11,7 @@
           integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
           crossorigin=""
     >
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @vite(['resources/css/app.css'])
 </head>
 <body>
     <main id="app">
@@ -959,44 +959,51 @@
 
             <main class="md:ml-64 h-auto mt-20">
                 {{-- Form --}}
-                <form action="/carrier" method="post">
+                <form action="/carrier" method="post" id="add-carrier-form">
                     <section class="bg-white dark:bg-gray-900 mb-10">
                         <div class="px-8">
                             <h2 class="mb-4 text-xl font-bold text-gray-900 dark:text-white">Add a new carrier</h2>
                             <form action="#">
+                                @csrf
                                 <div class="grid gap-4 sm:grid-cols-2 sm:gap-6">
-                                    <div class="w-full">
+                                    <div class="w-full relative">
                                         <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Name</label>
                                         <input type="text" name="name" id="name" aria-describedby="name_success" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Type carrier name" required="">
                                     </div>
-                                    <div class="w-full">
+                                    <div class="w-full relative">
                                         <label for="dba" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">DBA</label>
                                         <input type="text" name="dba" id="dba" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Carrier DBA">
                                     </div>
-                                    <div class="w-full">
+                                    <div class="w-full relative">
                                         <label for="address-1" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Address 1</label>
                                         <input type="text" name="address_1" id="address-2" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="123 Street" required="">
                                     </div>
-                                    <div class="w-full">
+                                    <div class="w-full relative">
                                         <label for="address-2" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Address 2</label>
-                                        <input type="text" name="address_2" id="address-1" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Suite B">
+                                        <input type="text" name="address_2" id="address-2" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Suite B">
                                     </div>
-                                    <div class="w-full">
+                                    <div class="w-full relative">
                                         <label for="city" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">City</label>
                                         <input type="text" name="city" id="city" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Anywhere" required="">
                                     </div>
-                                    <div class="w-full">
+                                    <div class="w-full relative">
                                         <label for="state" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">State</label>
-                                        <select id="category" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                                        <select id="state" name="state" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" required>
                                             <option value="">-- Select One --</option>
-                                            <option value="AK">Alaska</option>
+                                            @foreach($states as $state)
+                                                <option value="{{ $state->abbreviation }}">{{ $state->state }}</option>
+                                            @endforeach
                                         </select>
                                     </div>
-                                    <div class="w-full">
+                                    <div class="w-full relative">
                                         <label for="zip" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Zip</label>
                                         <input type="text" name="zip" id="zip" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="12345-5678" required="">
                                     </div>
-                                    <div class="w-full">
+                                    <div class="w-full relative">
+                                        <label for="phone" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Phone</label>
+                                        <input type="text" name="phone" id="phone" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="___-___-____" required="">
+                                    </div>
+                                    <div class="w-full relative">
                                         <label class="block mb-4 text-sm font-medium text-gray-900 dark:text-white">Active?</label>
                                         <div class="flex items-center">
                                             <label for="active-yes" class="mr-2 text-sm font-medium text-gray-900 dark:text-gray-300">Yes</label>
@@ -1006,20 +1013,20 @@
                                             <input id="active-no" type="radio" value="0" name="active" class="w-3 h-3 bg-gray-50 border border-gray-300 text-primary-700 text-sm rounded-md focus:ring-primary-600 focus:border-primary-600 block p-[8px] dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
                                         </div>
                                     </div>
-                                    <div class="sm:col-span-2">
+                                    <div class="sm:col-span-2 relative">
                                         <label for="notes" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Notes</label>
-                                        <textarea id="notes" rows="8" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Your notes here"></textarea>
+                                        <textarea id="notes" name="notes" rows="8" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Your notes here"></textarea>
                                     </div>
-                                    <div class="sm:col-span-2">
+                                    <div id="coverages-grouping" class="sm:col-span-2 relative">
                                         <div class="flex items-center">
-                                            <label for="coverages-home" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300 mr-2">Home</label>
-                                            <input id="coverages-home" type="checkbox" name="coverages[home]" class="w-4 h-4 mr-3 text-primary-700 bg-gray-50 rounded-sm border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                                            <label for="coverages-home" class="text-sm font-medium text-gray-900 dark:text-gray-300 mr-2">Home</label>
+                                            <input id="coverages-home" type="checkbox" name="coverages[home]" class="carrier-coverage-group w-4 h-4 mr-3 text-primary-700 bg-gray-50 rounded-sm border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
 
                                             <label for="coverages-auto" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300 mr-2">Auto</label>
-                                            <input id="coverages-auto" type="checkbox" name="coverages[auto]" class="w-4 h-4 mr-3 text-primary-700 bg-gray-50 rounded-sm border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                                            <input id="coverages-auto" type="checkbox" name="coverages[auto]" class="carrier-coverage-group w-4 h-4 mr-3 text-primary-700 bg-gray-50 rounded-sm border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
 
                                             <label for="coverages-life" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300 mr-2">Life</label>
-                                            <input id="coverages-life" type="checkbox" name="coverages[life]" class="w-4 h-4 text-primary-700 bg-gray-50 rounded-sm border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                                            <input id="coverages-life" type="checkbox" name="coverages[life]" class="carrier-coverage-group w-4 h-4 text-primary-700 bg-gray-50 rounded-sm border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
                                         </div>
                                     </div>
                                 </div>
@@ -1053,5 +1060,6 @@
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
             integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
             crossorigin=""></script>
+    @vite(['resources/js/app.js'])
 </body>
 </html>
