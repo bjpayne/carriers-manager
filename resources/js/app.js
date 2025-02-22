@@ -7,6 +7,19 @@ import validate from 'jquery-validation';
 import mask from 'jquery-mask-plugin';
 import _ from 'lodash';
 
+let currentCarrier = (function () {
+    let pathName = window.location.pathname;
+
+    let regexp = /(\/carrier\/)([0-9]*)/gm;
+    let groups = [...pathName.matchAll(regexp)];
+
+    if (groups.length === 2) {
+        return groups[1];
+    }
+
+    return null;
+})();
+
 axios.get('/carriers', )
     .then(function (response) {
         let carriers = response.data;
@@ -32,14 +45,26 @@ axios.get('/carriers', )
 
             let marker = new markerIcon({iconUrl: 'https://unpkg.com/leaflet@1.3.1/dist/images/marker-icon.png'});
 
-            let popup = `
-                <p><strong>Carrier:</strong> ${carrier.name}</p>
-                <p><strong>Address:</strong> ${carrier.address_1} ${carrier.address_2} ${carrier.city} ${carrier.state}, ${carrier.zip}</p>
-                <p><strong>Phone:</strong> <a href="tel:${carrier.phone}">${carrier.phone}</a></p>
-                <p><strong>Coverages</strong> ${carrier.carrier_coverages.map((_coverage) => { return _coverage.coverage}).join(', ')}</p>
-            `;
+            let popup = L.popup()
+                .setContent(`
+                    <p><strong>Carrier:</strong> ${carrier.name}</p>
+                    <p><strong>Address:</strong> ${carrier.address_1} ${carrier.address_2} ${carrier.city} ${carrier.state}, ${carrier.zip}</p>
+                    <p><strong>Phone:</strong> <a href="tel:${carrier.phone}">${carrier.phone}</a></p>
+                    <p><strong>Coverages</strong> ${carrier.carrier_coverages.map((_coverage) => { return _coverage.coverage}).join(', ')}</p>
+                `
+            );
 
-            L.marker([carrier.long, carrier.lat], {icon: marker}).addTo(map).bindPopup(popup);
+            let mapMarker = L.marker([carrier.long, carrier.lat], {icon: marker}).bindPopup(popup);
+
+            mapMarker.on('popupopen', function () {
+                loadCarrier(carrier);
+            });
+
+            if (currentCarrier && currentCarrier === carrier.id) {
+                mapMarker.openPopup(popup);
+            }
+
+            mapMarker.addTo(map);
         });
 
         loadCoverages(map);
@@ -93,9 +118,45 @@ function loadCoverages(map) {
         });
 }
 
-$.validator.messages.required = 'required';
+function loadCarrier(carrier) {
+    $('#name').val(carrier.name);
+    $('#dba').val(carrier.dba);
+    $('#address-1').val(carrier.address_1);
+    $('#address-2').val(carrier.address_2);
+    $('#city').val(carrier.city);
+    $('#state').val(carrier.state);
+    $('#zip').val(carrier.zip);
+    $('#phone').val(carrier.phone);
+    $('#active').prop('checked', parseInt(carrier.active) === 1);
+    $('#notes').val(carrier.notes);
 
-$('#phone').mask('000-000-0000', {placeholder: '___-___-____'});
+    $('#coverages-auto').prop('checked', false);
+    $('#coverages-home').prop('checked', false);
+    $('#coverages-life').prop('checked', false);
+
+    carrier.carrier_coverages.forEach(function (coverage) {
+       switch (coverage.coverage) {
+           case 'Auto':
+               $('#coverages-auto').prop('checked', true);
+
+               break;
+           case 'Home':
+               $('#coverages-home').prop('checked', true);
+
+               break;
+           case 'Life':
+               $('#coverages-life').prop('checked', true);
+
+               break;
+           default:
+               break;
+       }
+    });
+
+    const url = `/carrier/${carrier.id}`;
+
+    history.pushState("", "", url);
+}
 
 function handleCoveragesGroupValidation(form) {
     if (form.find('#coverages-home').prop('checked') === false &&
@@ -111,6 +172,12 @@ function handleCoveragesGroupValidation(form) {
 
     return true;
 }
+
+console.log(currentCarrier);
+
+$.validator.messages.required = 'required';
+
+$('#phone').mask('000-000-0000', {placeholder: '___-___-____'});
 
 $('#add-carrier-form').validate({
     errorClass: "invalid",

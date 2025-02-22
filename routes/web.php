@@ -70,10 +70,11 @@ Route::post('/carrier', function (Request $request) {
 });
 
 Route::get('/carrier/{id}', function (string $id) {
-    $carrier = Carriers::find($id);
+    $states = States::all();
 
-    return response()
-        ->json($carrier);
+    $carrier = Carriers::with('carrierCoverages')->find($id);
+
+    return view('home', compact('states', 'carrier'));
 })->where('id', '[0-9]+');
 
 Route::get('/coverages', function () {

@@ -968,46 +968,46 @@
                                 <div class="grid gap-4 sm:grid-cols-2 sm:gap-6">
                                     <div class="w-full relative">
                                         <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Name</label>
-                                        <input type="text" name="name" id="name" aria-describedby="name_success" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Type carrier name" required="">
+                                        <input type="text" name="name" id="name" aria-describedby="name_success" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Type carrier name" required value="{{ $carrier->name ?? '' }}">
                                     </div>
                                     <div class="w-full relative">
                                         <label for="dba" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">DBA</label>
-                                        <input type="text" name="dba" id="dba" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Carrier DBA">
+                                        <input type="text" name="dba" id="dba" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Carrier DBA" value="{{ $carrier->dba ?? '' }}">
                                     </div>
                                     <div class="w-full relative">
                                         <label for="address-1" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Address 1</label>
-                                        <input type="text" name="address_1" id="address-2" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="123 Street" required="">
+                                        <input type="text" name="address_1" id="address-1" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="123 Street" required value="{{ $carrier->address_1 ?? '' }}">
                                     </div>
                                     <div class="w-full relative">
                                         <label for="address-2" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Address 2</label>
-                                        <input type="text" name="address_2" id="address-2" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Suite B">
+                                        <input type="text" name="address_2" id="address-2" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Suite B" value="{{ $carrier->address_2 ?? '' }}">
                                     </div>
                                     <div class="w-full relative">
                                         <label for="city" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">City</label>
-                                        <input type="text" name="city" id="city" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Anywhere" required="">
+                                        <input type="text" name="city" id="city" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Anywhere" required value="{{ $carrier->city ?? '' }}">
                                     </div>
                                     <div class="w-full relative">
                                         <label for="state" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">State</label>
-                                        <select id="state" name="state" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" required>
+                                        <select id="state" name="state" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" required value="{{ $carrier->state ?? '' }}">
                                             <option value="">-- Select One --</option>
                                             @foreach($states as $state)
-                                                <option value="{{ $state->abbreviation }}">{{ $state->state }}</option>
+                                                <option value="{{ $state->abbreviation }}" {{ ($carrier->state ?? '') == $state->abbreviation ? 'selected' : '' }}>{{ $state->state }}</option>
                                             @endforeach
                                         </select>
                                     </div>
                                     <div class="w-full relative">
                                         <label for="zip" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Zip</label>
-                                        <input type="text" name="zip" id="zip" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="12345-5678" required="">
+                                        <input type="text" name="zip" id="zip" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="12345-5678" required value="{{ $carrier->zip ?? '' }}">
                                     </div>
                                     <div class="w-full relative">
                                         <label for="phone" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Phone</label>
-                                        <input type="text" name="phone" id="phone" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="___-___-____" required="">
+                                        <input type="text" name="phone" id="phone" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="___-___-____" required value="{{ $carrier->phone ?? '' }}">
                                     </div>
                                     <div class="w-full relative">
                                         <label class="block mb-4 text-sm font-medium text-gray-900 dark:text-white">Active?</label>
                                         <div class="flex items-center">
                                             <label for="active-yes" class="mr-2 text-sm font-medium text-gray-900 dark:text-gray-300">Yes</label>
-                                            <input id="active-yes" type="radio" value="1" name="active" class="w-3 h-3 mr-4 bg-gray-50 border border-gray-300 text-primary-700 text-sm rounded-md focus:ring-primary-600 focus:border-primary-600 block p-[8px] dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" checked>
+                                            <input id="active-yes" type="radio" value="1" name="active" class="w-3 h-3 mr-4 bg-gray-50 border border-gray-300 text-primary-700 text-sm rounded-md focus:ring-primary-600 focus:border-primary-600 block p-[8px] dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" {{ isset($carrier) ? ($carrier->active == 1 ? 'checked' : '') : 'checked' }}>
 
                                             <label for="active-no" class="mr-2 text-sm font-medium text-gray-900 dark:text-gray-300">No</label>
                                             <input id="active-no" type="radio" value="0" name="active" class="w-3 h-3 bg-gray-50 border border-gray-300 text-primary-700 text-sm rounded-md focus:ring-primary-600 focus:border-primary-600 block p-[8px] dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
@@ -1015,18 +1015,19 @@
                                     </div>
                                     <div class="sm:col-span-2 relative">
                                         <label for="notes" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Notes</label>
-                                        <textarea id="notes" name="notes" rows="8" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Your notes here"></textarea>
+                                        <textarea id="notes" name="notes" rows="8" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Your notes here"
+                                        >{{ $carrier->notes ?? '' }}</textarea>
                                     </div>
                                     <div id="coverages-grouping" class="sm:col-span-2 relative">
                                         <div class="flex items-center">
                                             <label for="coverages-home" class="text-sm font-medium text-gray-900 dark:text-gray-300 mr-2">Home</label>
-                                            <input id="coverages-home" type="checkbox" name="coverages[home]" class="carrier-coverage-group w-4 h-4 mr-3 text-primary-700 bg-gray-50 rounded-sm border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                                            <input id="coverages-home" type="checkbox" name="coverages[home]" class="carrier-coverage-group w-4 h-4 mr-3 text-primary-700 bg-gray-50 rounded-sm border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" {{ isset($carrier) && $carrier->carrierCoverages->where('coverage', 'Home')->count() ? 'checked': '' }}>
 
                                             <label for="coverages-auto" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300 mr-2">Auto</label>
-                                            <input id="coverages-auto" type="checkbox" name="coverages[auto]" class="carrier-coverage-group w-4 h-4 mr-3 text-primary-700 bg-gray-50 rounded-sm border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                                            <input id="coverages-auto" type="checkbox" name="coverages[auto]" class="carrier-coverage-group w-4 h-4 mr-3 text-primary-700 bg-gray-50 rounded-sm border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" {{ isset($carrier) && $carrier->carrierCoverages->where('coverage', 'Auto')->count() ? 'checked': '' }}>
 
                                             <label for="coverages-life" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300 mr-2">Life</label>
-                                            <input id="coverages-life" type="checkbox" name="coverages[life]" class="carrier-coverage-group w-4 h-4 text-primary-700 bg-gray-50 rounded-sm border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                                            <input id="coverages-life" type="checkbox" name="coverages[life]" class="carrier-coverage-group w-4 h-4 text-primary-700 bg-gray-50 rounded-sm border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" {{ isset($carrier) && $carrier->carrierCoverages->where('coverage', 'Life')->count() ? 'checked': '' }}>
                                         </div>
                                     </div>
                                 </div>
