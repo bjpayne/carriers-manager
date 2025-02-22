@@ -22,37 +22,13 @@ Route::get('/carriers', function () {
         ->json($carriers);
 });
 
-Route::get('/carrier/{id}', function (string $id) {
-    $carrier = Carriers::find($id);
-
-    return response()
-        ->json($carrier);
-})->where('id', '[0-9]+');
-
-Route::get('/geocode', function (Request $request) {
-    $results = app("geocoder")
-        ->using('mapbox')
-        ->doNotCache()
-        ->geocode($request->get('address'))
-        ->get();
-
-    $coordinates = [];
-
-    if (! $results->isEmpty()) {
-        // Geocoder\Model\Coordinates::toArray [long, lat]
-        $coordinates = $results->get(0)->getCoordinates()->toArray();
-    }
-
-    return response()->json($coordinates);
-});
-
 Route::post('/carrier', function (Request $request) {
     $carrier = new Carriers();
 
     $carrier->name      = $request->input('name');
     $carrier->dba       = $request->input('dba');
     $carrier->address_1 = $request->input('address_1');
-    $carrier->address_2 = $request->input('address_2', '');
+    $carrier->address_2 = $request->input('address_2');
     $carrier->city      = $request->input('city');
     $carrier->state     = $request->input('state');
     $carrier->zip       = $request->input('zip');
@@ -60,7 +36,7 @@ Route::post('/carrier', function (Request $request) {
     $carrier->notes     = $request->input('notes');
     $carrier->active    = $request->input('active', 1);
 
-    $address = implode(' ', [$request->input('address_1'), $request->input('address_2'), $request->input('city'), $request->input('state'), $request->input('zip')]);
+    $address = implode(' ', array_filter([$request->input('address_1'), $request->input('address_2'), $request->input('city'), $request->input('state'), $request->input('zip')]));
 
     $results = app("geocoder")
         ->using('mapbox')
@@ -91,4 +67,60 @@ Route::post('/carrier', function (Request $request) {
 
     return response()
         ->redirectToRoute('home');
+});
+
+Route::get('/carrier/{id}', function (string $id) {
+    $carrier = Carriers::find($id);
+
+    return response()
+        ->json($carrier);
+})->where('id', '[0-9]+');
+
+Route::get('/coverages', function () {
+    $states = States::all();
+
+    $coverages = collect();
+
+    $states->each(function ($state) use ($coverages) {
+        if (! $coverages->has($state->state)) {
+            $coverages->put($state->state, collect());
+        }
+
+        $carriers = Carriers::with('carrierCoverages')
+            ->where('state', $state->abbreviation)
+            ->whereNotNull('lat')
+            ->whereNotNull('long')
+            ->get();
+
+        $carriers->each(function ($carrier) use ($state, $coverages) {
+            $carrier->carrierCoverages()->each(function ($carrierCoverage) use ($state, $coverages) {
+                /** @var \Illuminate\Support\Collection $coverage */
+                $coverage = $coverages->get($state->state);
+
+                if (! $coverage->contains($carrierCoverage->coverage)) {
+                    $coverage->push($carrierCoverage->coverage);
+                }
+            });
+        });
+    });
+
+    return response()
+        ->json($coverages);
+});
+
+Route::get('/geocode', function (Request $request) {
+    $results = app("geocoder")
+        ->using('mapbox')
+        ->doNotCache()
+        ->geocode($request->get('address'))
+        ->get();
+
+    $coordinates = [];
+
+    if (! $results->isEmpty()) {
+        // Geocoder\Model\Coordinates::toArray [long, lat]
+        $coordinates = $results->get(0)->getCoordinates()->toArray();
+    }
+
+    return response()->json($coordinates);
 });

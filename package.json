@@ -3,6 +3,7 @@
     "type": "module",
     "scripts": {
         "build": "vite build",
+        "watch": "vite build --watch",
         "dev": "vite"
     },
     "devDependencies": {
@@ -19,6 +20,7 @@
         "flowbite": "^3.1.2",
         "jquery": "^3.7.1",
         "jquery-mask-plugin": "^1.14.16",
-        "jquery-validation": "^1.21.0"
+        "jquery-validation": "^1.21.0",
+        "lodash": "^4.17.21"
     }
 }
