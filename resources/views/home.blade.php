@@ -869,7 +869,7 @@
                                 <div class="sm:col-span-2 relative">
                                     <label for="notes" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Notes</label>
 
-                                    @if (! $carrier->carrierNotes->isEmpty())
+                                    @if (isset($carrier) && ! $carrier->carrierNotes->isEmpty())
                                         <ol id="carrier-notes" class="relative border-s border-gray-200 dark:border-gray-700">
                                             @foreach($carrier->carrierNotes as $carrierNote)
                                                 <li class="mb-5 ms-4">
