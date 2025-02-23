@@ -3,7 +3,9 @@
 namespace Database\Seeders;
 
 use App\Models\CarrierCoverages;
+use App\Models\CarrierNotes;
 use App\Models\Carriers;
+use Database\Factories\CarrierNotesFactory;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -26,10 +28,14 @@ class DatabaseSeeder extends Seeder
                     ->count(rand(1, 3))
                     ->sequence(['coverage' => 'Auto'], ['coverage' => 'Home'], ['coverage' => 'Life'])
             )
+            ->has(
+                CarrierNotes::factory()
+                    ->count(rand(0, 3))
+            )
             ->createMany(100);
 
         $this->call([
-            States::class,
+            States::class
         ]);
     }
 }

@@ -7,9 +7,11 @@ window.$ = $;
 import validate from 'jquery-validation';
 import mask from 'jquery-mask-plugin';
 import _ from 'lodash';
+import dateFormat, { masks } from "dateformat";
 
 let mapMarkers = {};
 let allCarriers = [];
+let initialLoad = true;
 
 let currentCarrier = (function () {
     let pathName = window.location.pathname;
@@ -61,7 +63,9 @@ axios.get('/carriers', )
             let mapMarker = L.marker([carrier.long, carrier.lat], {icon: marker}).bindPopup(popup);
 
             mapMarker.on('popupopen', function () {
-                loadCarrier(carrier);
+                if (! initialLoad) {
+                    loadCarrier(carrier);
+                }
             });
 
             mapMarkers[carrier.id] = mapMarker;
@@ -74,6 +78,8 @@ axios.get('/carriers', )
         }
 
         loadCoverages(map);
+
+        initialLoad = false;
 });
 
 function loadCoverages(map) {
@@ -157,6 +163,18 @@ function loadCarrier(carrier) {
            default:
                break;
        }
+
+       let carrierNotes = $('#carrier-notes');
+
+       carrierNotes.html('');
+
+       carrier.carrier_notes.forEach(function (note) {
+           $(`<li class="mb-5 ms-4">
+            <div class="absolute w-3 h-3 bg-gray-200 rounded-full mt-1.5 -start-1.5 border border-white dark:border-gray-900 dark:bg-gray-700"></div>
+            <time class="mb-1 text-sm font-normal leading-none text-gray-400 dark:text-gray-500">${ dateFormat(note.created_at, 'mmmm dS @ H:MM tt') }</time>
+            <p class="mb-4 text-base font-normal text-gray-500 dark:text-gray-400">${ note.note }</p>
+        </li>`).appendTo(carrierNotes);
+       });
     });
 
     const url = `/carrier/${carrier.id}`;
@@ -245,6 +263,19 @@ $('#add-carrier-form').validate({
             window.setTimeout(function() {
                 dismiss.hide()
             }, 3000);
+
+            let notes = form.find('#notes');
+
+            if (notes.val().trim().length > 0) {
+                let now = new Date();
+                $(`<li class="mb-5 ms-4">
+                    <div class="absolute w-3 h-3 bg-gray-200 rounded-full mt-1.5 -start-1.5 border border-white dark:border-gray-900 dark:bg-gray-700"></div>
+                    <time class="mb-1 text-sm font-normal leading-none text-gray-400 dark:text-gray-500">${ dateFormat(now, 'mmmm dS @ H:MM tt') }</time>
+                    <p class="mb-4 text-base font-normal text-gray-500 dark:text-gray-400">${ notes.val() }</p>
+                </li>`).appendTo($('#carrier-notes'));
+
+                notes.val('');
+            }
         }).finally(function() {
             form.find('button[type=submit]').html('Update carrier');
             form.find('button[type=submit]').prop('disabled', false);
@@ -254,13 +285,20 @@ $('#add-carrier-form').validate({
     }
 });
 
-$('#topbar-search').on('keyup', function() {
+$('#topbar-search').on('keyup', function(event) {
     let input = $(this);
     let searchDropdown = $('#search-dropdown');
 
     if (input.val().length === 0) {
         searchDropdown.addClass('hidden');
         searchDropdown.find('ul').html('');
+
+        return;
+    }
+
+    // Escape key
+    if (event.keyCode === 27) {
+        searchDropdown.addClass('hidden');
 
         return;
     }
@@ -281,7 +319,21 @@ $('#topbar-search').on('keyup', function() {
     }
 
     filteredCarriers.forEach(function (_carrier) {
-        $(`<li><a href="#" onclick="loadCarrier(${_carrier.id}); return false;" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">${_carrier.name}</a></li>`)
+        $(`<li><a href="#" data-carrier="${_carrier.id}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">${_carrier.name}</a></li>`)
             .appendTo(searchDropdown.find('ul'));
     });
+});
+
+$('#search-dropdown').on('click', 'a', function () {
+    let a = $(this);
+
+    $('#search-dropdown').addClass('hidden');
+
+    let carrier = allCarriers.filter(function (_carrier) {
+        return _carrier.id === a.data('carrier')
+    })[0];
+
+    loadCarrier(carrier);
+
+    return false;
 });

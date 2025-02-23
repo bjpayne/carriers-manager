@@ -17,6 +17,7 @@
         "vite": "^6.0.11"
     },
     "dependencies": {
+        "dateformat": "^5.0.3",
         "flowbite": "^3.1.2",
         "jquery": "^3.7.1",
         "jquery-mask-plugin": "^1.14.16",

@@ -2107,7 +2107,7 @@ namespace PHPSTORM_META {
 'ide-helper.macroable_traits','tinker.commands','tinker.alias','tinker.dont_alias',);
         registerArgumentsSet('middleware', 
 'web','api',);
-        registerArgumentsSet('routes', 'storage.local',);
+        registerArgumentsSet('routes', 'home','carrier','storage.local',);
         registerArgumentsSet('views', 
 'home','laravel-exceptions-renderer::components.card','laravel-exceptions-renderer::components.context','laravel-exceptions-renderer::components.editor','laravel-exceptions-renderer::components.header',
 'laravel-exceptions-renderer::components.icons.chevron-down','laravel-exceptions-renderer::components.icons.chevron-up','laravel-exceptions-renderer::components.icons.computer-desktop','laravel-exceptions-renderer::components.icons.moon','laravel-exceptions-renderer::components.icons.sun',

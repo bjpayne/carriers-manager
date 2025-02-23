@@ -2,6 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Models\Carriers;
+use Carbon\Carbon;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
@@ -20,7 +22,9 @@ class States extends Seeder
                 $states[] = [
                     'state'        => $data[0],
                     'abbreviation' => $data[1],
-                    'country'      => 'US'
+                    'country'      => 'US',
+                    'created_at'   => Carbon::now(),
+                    'updated_at'   => Carbon::now(),
                 ];
             }
             fclose($handle);

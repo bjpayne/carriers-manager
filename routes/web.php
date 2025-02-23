@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\CarrierCoverages;
+use App\Models\CarrierNotes;
 use App\Models\Carriers;
 use App\Models\States;
 use Illuminate\Support\Facades\Route;
@@ -15,7 +16,6 @@ Route::get('/', function () {
 Route::get('/carriers', function () {
     $carriers = Carriers::whereNotNull('lat')
         ->whereNotNull('long')
-        ->with('carrierCoverages')
         ->get();
 
     return response()
@@ -33,7 +33,6 @@ Route::post('/carrier', function (Request $request) {
     $carrier->state     = $request->input('state');
     $carrier->zip       = $request->input('zip');
     $carrier->phone     = $request->input('phone');
-    $carrier->notes     = $request->input('notes');
     $carrier->active    = $request->input('active', 1);
 
     $address = implode(' ', array_filter([$request->input('address_1'), $request->input('city'), $request->input('state'), $request->input('zip')]));
@@ -63,6 +62,15 @@ Route::post('/carrier', function (Request $request) {
 
             $carrierCoverage->save();
         }
+
+        if (! empty($request->input('notes'))) {
+            $carrierNotes = new CarrierNotes();
+
+            $carrierNotes->carrier_id = $carrier->id;
+            $carrierNotes->note       = $request->input('notes');
+
+            $carrierNotes->save();
+        }
     }
 
     return response()
@@ -72,15 +80,14 @@ Route::post('/carrier', function (Request $request) {
 Route::get('/carrier/{id}', function (string $id) {
     $states = States::all();
 
-    $carrier = Carriers::with('carrierCoverages')->find($id);
+    $carrier = Carriers::find($id);
 
     return view('home', compact('states', 'carrier'));
 })->where('id', '[0-9]+')
     ->name('carrier');
 
 Route::put('/carrier/{id}', function (Request $request, $id) {
-    $carrier = Carriers::with('carrierCoverages')
-        ->find($id);
+    $carrier = Carriers::find($id);
 
     if (! $carrier) {
         return response()
@@ -95,7 +102,6 @@ Route::put('/carrier/{id}', function (Request $request, $id) {
     $carrier->state     = $request->input('state');
     $carrier->zip       = $request->input('zip');
     $carrier->phone     = $request->input('phone');
-    $carrier->notes     = $request->input('notes');
     $carrier->active    = $request->input('active', 1);
 
     $address = implode(' ', array_filter([$request->input('address_1'), $request->input('city'), $request->input('state'), $request->input('zip')]));
@@ -129,6 +135,15 @@ Route::put('/carrier/{id}', function (Request $request, $id) {
 
             $carrierCoverage->save();
         }
+
+        if (! empty($request->input('notes'))) {
+            $carrierNotes = new CarrierNotes();
+
+            $carrierNotes->carrier_id = $carrier->id;
+            $carrierNotes->note       = $request->input('notes');
+
+            $carrierNotes->save();
+        }
     }
 
     return response()
@@ -145,8 +160,7 @@ Route::get('/coverages', function () {
             $coverages->put($state->state, collect());
         }
 
-        $carriers = Carriers::with('carrierCoverages')
-            ->where('state', $state->abbreviation)
+        $carriers = Carriers::where('state', $state->abbreviation)
             ->whereNotNull('lat')
             ->whereNotNull('long')
             ->get();

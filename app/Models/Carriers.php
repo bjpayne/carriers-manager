@@ -12,6 +12,8 @@ class Carriers extends Model
     /** @use HasFactory<\Database\Factories\CarriersFactory> */
     use HasFactory;
 
+    protected $with = ['carrierCoverages', 'carrierNotes'];
+
     /**
      * The "booted" method of the model.
      */
@@ -25,6 +27,11 @@ class Carriers extends Model
     public function carrierCoverages() : HasMany
     {
         return $this->hasMany(CarrierCoverages::class, 'carrier_id', 'id');
+    }
+
+    public function carrierNotes() : HasMany
+    {
+        return $this->hasMany(CarrierNotes::class, 'carrier_id', 'id');
     }
 
     public function coverage()
