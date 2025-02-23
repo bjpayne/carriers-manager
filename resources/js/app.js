@@ -30,69 +30,94 @@ let currentCarrier = (function () {
 
 axios.get('/carriers', )
     .then(function (response) {
-        map = L.map('map').setView([37.8, -96], 5);
-
         let carriers = response.data;
 
-        let tiles = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            maxZoom: 19,
-            attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-        });
+        loadCarriers(carriers);
+    }
+);
 
-        tiles.addTo(map);
+function reloadCarrierMapMarker(carrier) {
+    if (mapMarkers.hasOwnProperty(carrier.id)) {
+        map.removeLayer(mapMarkers[carrier.id]);
+    }
 
-        carriers.forEach(function (carrier) {
-            let markerIcon = L.Icon.extend({
-                options: {
-                    shadowUrl: 'https://unpkg.com/leaflet@1.3.1/dist/images/marker-shadow.png',
-                    iconSize:     [25, 41],
-                    iconAnchor: [12, 41],
-                    popupAnchor:  [2, -44]
-                }
-            });
+    addCarrierMarker(carrier);
 
-            let marker = new markerIcon({iconUrl: 'https://unpkg.com/leaflet@1.3.1/dist/images/marker-icon.png'});
+    if (mapMarkers.hasOwnProperty(carrier.id)) {
+        mapMarkers[carrier.id].openPopup();
+    }
+}
 
-            let popup = L.popup()
-                .setContent(`
-                    <p><strong>Carrier:</strong> ${carrier.name}</p>
-                    <p><strong>Address:</strong> ${carrier.address_1} ${carrier.address_2} ${carrier.city} ${carrier.state}, ${carrier.zip}</p>
-                    <p><strong>Phone:</strong> <a href="tel:${carrier.phone}">${carrier.phone}</a></p>
-                    <p><strong>Coverages</strong> ${carrier.carrier_coverages.map((_coverage) => { return _coverage.coverage}).join(', ')}</p>
-                `
-            );
+function loadCarriers(carriers) {
+    map = L.map('map').setView([37.8, -96], 5);
 
-            let mapMarker = L.marker([carrier.long, carrier.lat], {icon: marker}).bindPopup(popup);
+    let tiles = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+    });
 
-            mapMarker.on('popupopen', function () {
-                if (! initialLoad) {
-                    loadCarrier(carrier);
-                }
-            });
+    tiles.addTo(map);
 
-            mapMarkers[carrier.id] = mapMarker;
-            mapMarker.addTo(map);
-            allCarriers.push(carrier);
-        });
+    carriers.forEach(function (carrier) {
+        addCarrierMarker(carrier);
+    });
 
-        if (mapMarkers.hasOwnProperty(currentCarrier)) {
-            mapMarkers[currentCarrier].openPopup();
+    if (mapMarkers.hasOwnProperty(currentCarrier)) {
+        mapMarkers[currentCarrier].openPopup();
+    }
+
+    loadCoverages();
+
+    initialLoad = false;
+}
+
+function addCarrierMarker(carrier) {
+    let markerIcon = L.Icon.extend({
+        options: {
+            shadowUrl: 'https://unpkg.com/leaflet@1.3.1/dist/images/marker-shadow.png',
+            iconSize:     [25, 41],
+            iconAnchor: [12, 41],
+            popupAnchor:  [2, -44]
         }
+    });
 
-        loadCoverages(map);
+    let marker = new markerIcon({iconUrl: 'https://unpkg.com/leaflet@1.3.1/dist/images/marker-icon.png'});
 
-        initialLoad = false;
-});
+    let popup = L.popup()
+        .setContent(`
+                <p><strong>Carrier:</strong> ${carrier.name}</p>
+                <p><strong>Address:</strong> ${carrier.address_1} ${carrier.address_2} ${carrier.city} ${carrier.state}, ${carrier.zip}</p>
+                <p><strong>Phone:</strong> <a href="tel:${carrier.phone}">${carrier.phone}</a></p>
+                <p><strong>Coverages</strong> ${carrier.carrier_coverages.map((_coverage) => { return _coverage.coverage}).join(', ')}</p>
+            `
+        );
 
-function loadCoverages(map) {
+    let mapMarker = L.marker([carrier.long, carrier.lat], {icon: marker}).bindPopup(popup);
+
+    mapMarker.on('popupopen', function () {
+        if (! initialLoad) {
+            loadCarrier(carrier);
+        }
+    });
+
+    mapMarkers[carrier.id] = mapMarker;
+    mapMarker.addTo(map);
+    allCarriers.push(carrier);
+}
+
+function reloadCoverages() {
     if (coverageLayers.length > 0) {
         coverageLayers.forEach(function (layer) {
-           map.removeLayer(layer);
+            map.removeLayer(layer);
         });
 
         coverageLayers = [];
     }
 
+    loadCoverages();
+}
+
+function loadCoverages() {
     axios.get('/coverages')
         .then(function (response) {
             let coverages = response.data;
@@ -199,8 +224,6 @@ function loadCarrier(carrier) {
 
     form.prop('action', `/carrier/${carrier.id}`);
     $('<input type="hidden" name="_method" value="PUT">').prependTo(form);
-
-    loadCoverages(map);
 }
 
 function handleCoveragesGroupValidation(form) {
@@ -246,7 +269,9 @@ $('#add-carrier-form').validate({
             url: form.prop('action'),
             data: form.serialize(),
         }).then(function (response) {
+            reloadCoverages();
             loadCarrier(response.data);
+            reloadCarrierMapMarker(response.data);
 
             let toast = $(`<div id="toast-simple" class="z-[100] fixed top-[5%] right-5 flex items-center w-full max-w-xs p-4 space-x-4 rtl:space-x-reverse text-gray-500 bg-white divide-x rtl:divide-x-reverse divide-gray-200 rounded-lg shadow-md dark:text-gray-400 dark:divide-gray-700 dark:bg-gray-800" role="alert">
                 <div class="inline-flex items-center justify-center shrink-0 w-8 h-8 text-green-500 bg-green-100 rounded-lg dark:bg-green-800 dark:text-green-200">
