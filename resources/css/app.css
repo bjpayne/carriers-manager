@@ -5,7 +5,9 @@
 input.invalid,
 input.invalid:focus,
 select.invalid,
-select.invalid:focus {
+select.invalid:focus
+textarea.invalid,
+textarea.invalid:focus {
     background-color: #fef2f2;
     border-color: #dc2626;
     color: oklch(.266 .079 36.259);
@@ -13,7 +15,8 @@ select.invalid:focus {
 }
 
 input.invalid + label.invalid,
-select.invalid + label.invalid {
+select.invalid + label.invalid,
+textarea.invalid + label.invalid {
     color: #f43300;
     font-size: 0.7rem;
     font-weight: bold;

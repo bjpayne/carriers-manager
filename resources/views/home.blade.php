@@ -863,7 +863,7 @@
                                         <input id="active-yes" type="radio" value="1" name="active" class="w-3 h-3 mr-4 bg-gray-50 border border-gray-300 text-primary-700 text-sm rounded-md focus:ring-primary-600 focus:border-primary-600 block p-[8px] dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" {{ isset($carrier) ? ($carrier->active == 1 ? 'checked' : '') : 'checked' }}>
 
                                         <label for="active-no" class="mr-2 text-sm font-medium text-gray-900 dark:text-gray-300">No</label>
-                                        <input id="active-no" type="radio" value="0" name="active" class="w-3 h-3 bg-gray-50 border border-gray-300 text-primary-700 text-sm rounded-md focus:ring-primary-600 focus:border-primary-600 block p-[8px] dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                                        <input id="active-no" type="radio" value="0" name="active" class="w-3 h-3 bg-gray-50 border border-gray-300 text-primary-700 text-sm rounded-md focus:ring-primary-600 focus:border-primary-600 block p-[8px] dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" {{ isset($carrier) ? ($carrier->active == 0 ? 'checked' : '') : '' }}>
                                     </div>
                                 </div>
                                 <div class="sm:col-span-2 relative">
@@ -880,7 +880,8 @@
                                                 @endforeach
                                         @endif
                                     </ol>
-                                    <textarea id="notes" name="notes" rows="8" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Your notes here"
+                                    <textarea id="notes" name="notes" rows="8" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                              placeholder="Your notes here" required
                                     ></textarea>
                                 </div>
                                 <div id="coverages-grouping" class="sm:col-span-2 relative">

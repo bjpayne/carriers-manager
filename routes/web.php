@@ -143,6 +143,8 @@ Route::put('/carrier/{id}', function (Request $request, $id) {
 
             $carrierNotes->save();
         }
+
+        $carrier = $carrier->fresh();
     }
 
     return response()

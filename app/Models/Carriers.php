@@ -14,16 +14,6 @@ class Carriers extends Model
 
     protected $with = ['carrierCoverages', 'carrierNotes'];
 
-    /**
-     * The "booted" method of the model.
-     */
-    protected static function booted(): void
-    {
-        static::addGlobalScope('active', function (Builder $builder) {
-            $builder->where('active', '=', 1);
-        });
-    }
-
     public function carrierCoverages() : HasMany
     {
         return $this->hasMany(CarrierCoverages::class, 'carrier_id', 'id');

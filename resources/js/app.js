@@ -223,6 +223,8 @@ $('#add-carrier-form').validate({
             return false;
         }
 
+        $('#coverages-grouping-error').remove();
+
         form.find('button[type=submit]').prop('disabled', true);
         form.find('button[type=submit]').html('Updating carrier...');
 
@@ -231,11 +233,7 @@ $('#add-carrier-form').validate({
             url: form.prop('action'),
             data: form.serialize(),
         }).then(function (response) {
-            if (! currentCarrier) {
-                window.location.href = `/carrier/${response.data.id}`;
-
-                return false;
-            }
+            loadCarrier(response.data);
 
             let toast = $(`<div id="toast-simple" class="z-[100] fixed top-[5%] right-5 flex items-center w-full max-w-xs p-4 space-x-4 rtl:space-x-reverse text-gray-500 bg-white divide-x rtl:divide-x-reverse divide-gray-200 rounded-lg shadow-md dark:text-gray-400 dark:divide-gray-700 dark:bg-gray-800" role="alert">
                 <div class="inline-flex items-center justify-center shrink-0 w-8 h-8 text-green-500 bg-green-100 rounded-lg dark:bg-green-800 dark:text-green-200">
@@ -269,19 +267,6 @@ $('#add-carrier-form').validate({
             window.setTimeout(function() {
                 dismiss.hide()
             }, 3000);
-
-            let notes = form.find('#notes');
-
-            if (notes.val().trim().length > 0) {
-                let now = new Date();
-                $(`<li class="mb-5 ms-4">
-                    <div class="absolute w-3 h-3 bg-gray-200 rounded-full mt-1.5 -start-1.5 border border-white dark:border-gray-900 dark:bg-gray-700"></div>
-                    <time class="mb-1 text-sm font-normal leading-none text-gray-400 dark:text-gray-500">${ dateFormat(now, 'mmmm dS @ H:MM tt') }</time>
-                    <p class="mb-4 text-base font-normal text-gray-500 dark:text-gray-400">${ notes.val() }</p>
-                </li>`).appendTo($('#carrier-notes'));
-
-                notes.val('');
-            }
         }).finally(function() {
             form.find('button[type=submit]').html('Update carrier');
             form.find('button[type=submit]').prop('disabled', false);
