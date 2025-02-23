@@ -9,8 +9,10 @@ import mask from 'jquery-mask-plugin';
 import _ from 'lodash';
 import dateFormat, { masks } from "dateformat";
 
+let map;
 let mapMarkers = {};
 let allCarriers = [];
+let coverageLayers = [];
 let initialLoad = true;
 
 let currentCarrier = (function () {
@@ -28,9 +30,9 @@ let currentCarrier = (function () {
 
 axios.get('/carriers', )
     .then(function (response) {
-        let carriers = response.data;
+        map = L.map('map').setView([37.8, -96], 5);
 
-        let map = L.map('map').setView([37.8, -96], 5);
+        let carriers = response.data;
 
         let tiles = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
             maxZoom: 19,
@@ -83,6 +85,14 @@ axios.get('/carriers', )
 });
 
 function loadCoverages(map) {
+    if (coverageLayers.length > 0) {
+        coverageLayers.forEach(function (layer) {
+           map.removeLayer(layer);
+        });
+
+        coverageLayers = [];
+    }
+
     axios.get('/coverages')
         .then(function (response) {
             let coverages = response.data;
@@ -126,6 +136,7 @@ function loadCoverages(map) {
                 }
             );
 
+            coverageLayers.push(mapObject);
             mapObject.addTo(map);
         });
 }
@@ -188,6 +199,8 @@ function loadCarrier(carrier) {
 
     form.prop('action', `/carrier/${carrier.id}`);
     $('<input type="hidden" name="_method" value="PUT">').prependTo(form);
+
+    loadCoverages(map);
 }
 
 function handleCoveragesGroupValidation(form) {
@@ -325,6 +338,8 @@ $('#search-dropdown').on('click', 'a', function () {
     })[0];
 
     loadCarrier(carrier);
+
+    $('#topbar-search').val('');
 
     return false;
 });
