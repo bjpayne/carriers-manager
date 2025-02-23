@@ -61,7 +61,7 @@
                             />
                             <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">Personal Lines Carriers</span>
                         </a>
-                        <form action="#" method="GET" class="hidden md:block md:pl-2">
+                        <form action="/search/carriers" method="GET" class="hidden md:block md:pl-2">
                             <label for="topbar-search" class="sr-only">Search</label>
                             <div class="relative md:w-64 md:w-96">
                                 <div
@@ -82,11 +82,14 @@
                                 </div>
                                 <input
                                     type="text"
-                                    name="email"
+                                    name="query"
                                     id="topbar-search"
                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full pl-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                                     placeholder="Search"
                                 />
+                                <div id="search-dropdown" class="hidden absolute z-10 top-[3.2rem] w-full rounded-lg shadow-md bg-white divide-y divide-gray-100 dark:bg-gray-700">
+                                    <ul class="py-2 text-sm text-gray-700 dark:text-gray-200"></ul>
+                                </div>
                             </div>
                         </form>
                     </div>
@@ -466,7 +469,7 @@
                     <ul class="space-y-2">
                         <li>
                             <a
-                                href="#"
+                                href="/"
                                 class="flex items-center p-2 text-base font-medium text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
                             >
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" class="w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white">
@@ -800,244 +803,90 @@
                         Settings page
                         <div class="tooltip-arrow" data-popper-arrow></div>
                     </div>
-                    <!-- Dropdown -->
-                    <div
-                        class="hidden z-50 my-4 text-base list-none bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700"
-                        id="language-dropdown"
-                    >
-                        <ul class="py-1" role="none">
-                            <li>
-                                <a
-                                    href="#"
-                                    class="block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 dark:hover:text-white dark:text-gray-300 dark:hover:bg-gray-600"
-                                    role="menuitem"
-                                >
-                                    <div class="inline-flex items-center">
-                                        <svg
-                                            aria-hidden="true"
-                                            class="h-3.5 w-3.5 rounded-full mr-2"
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            id="flag-icon-css-us"
-                                            viewBox="0 0 512 512"
-                                        >
-                                            <g fill-rule="evenodd">
-                                                <g stroke-width="1pt">
-                                                    <path
-                                                        fill="#bd3d44"
-                                                        d="M0 0h247v10H0zm0 20h247v10H0zm0 20h247v10H0zm0 20h247v10H0zm0 20h247v10H0zm0 20h247v10H0zm0 20h247v10H0z"
-                                                        transform="scale(3.9385)"
-                                                    />
-                                                    <path
-                                                        fill="#fff"
-                                                        d="M0 10h247v10H0zm0 20h247v10H0zm0 20h247v10H0zm0 20h247v10H0zm0 20h247v10H0zm0 20h247v10H0z"
-                                                        transform="scale(3.9385)"
-                                                    />
-                                                </g>
-                                                <path
-                                                    fill="#192f5d"
-                                                    d="M0 0h98.8v70H0z"
-                                                    transform="scale(3.9385)"
-                                                />
-                                                <path
-                                                    fill="#fff"
-                                                    d="M8.2 3l1 2.8H12L9.7 7.5l.9 2.7-2.4-1.7L6 10.2l.9-2.7-2.4-1.7h3zm16.5 0l.9 2.8h2.9l-2.4 1.7 1 2.7-2.4-1.7-2.4 1.7 1-2.7-2.4-1.7h2.9zm16.5 0l.9 2.8H45l-2.4 1.7 1 2.7-2.4-1.7-2.4 1.7 1-2.7-2.4-1.7h2.9zm16.4 0l1 2.8h2.8l-2.3 1.7.9 2.7-2.4-1.7-2.3 1.7.9-2.7-2.4-1.7h3zm16.5 0l.9 2.8h2.9l-2.4 1.7 1 2.7L74 8.5l-2.3 1.7.9-2.7-2.4-1.7h2.9zm16.5 0l.9 2.8h2.9L92 7.5l1 2.7-2.4-1.7-2.4 1.7 1-2.7-2.4-1.7h2.9zm-74.1 7l.9 2.8h2.9l-2.4 1.7 1 2.7-2.4-1.7-2.4 1.7 1-2.7-2.4-1.7h2.9zm16.4 0l1 2.8h2.8l-2.3 1.7.9 2.7-2.4-1.7-2.3 1.7.9-2.7-2.4-1.7h3zm16.5 0l.9 2.8h2.9l-2.4 1.7 1 2.7-2.4-1.7-2.4 1.7 1-2.7-2.4-1.7h2.9zm16.5 0l.9 2.8h2.9l-2.4 1.7 1 2.7-2.4-1.7-2.4 1.7 1-2.7-2.4-1.7H65zm16.4 0l1 2.8H86l-2.3 1.7.9 2.7-2.4-1.7-2.3 1.7.9-2.7-2.4-1.7h3zm-74 7l.8 2.8h3l-2.4 1.7.9 2.7-2.4-1.7L6 24.2l.9-2.7-2.4-1.7h3zm16.4 0l.9 2.8h2.9l-2.3 1.7.9 2.7-2.4-1.7-2.3 1.7.9-2.7-2.4-1.7h2.9zm16.5 0l.9 2.8H45l-2.4 1.7 1 2.7-2.4-1.7-2.4 1.7 1-2.7-2.4-1.7h2.9zm16.4 0l1 2.8h2.8l-2.3 1.7.9 2.7-2.4-1.7-2.3 1.7.9-2.7-2.4-1.7h3zm16.5 0l.9 2.8h2.9l-2.3 1.7.9 2.7-2.4-1.7-2.3 1.7.9-2.7-2.4-1.7h2.9zm16.5 0l.9 2.8h2.9L92 21.5l1 2.7-2.4-1.7-2.4 1.7 1-2.7-2.4-1.7h2.9zm-74.1 7l.9 2.8h2.9l-2.4 1.7 1 2.7-2.4-1.7-2.4 1.7 1-2.7-2.4-1.7h2.9zm16.4 0l1 2.8h2.8l-2.3 1.7.9 2.7-2.4-1.7-2.3 1.7.9-2.7-2.4-1.7h3zm16.5 0l.9 2.8h2.9l-2.3 1.7.9 2.7-2.4-1.7-2.3 1.7.9-2.7-2.4-1.7h2.9zm16.5 0l.9 2.8h2.9l-2.4 1.7 1 2.7-2.4-1.7-2.4 1.7 1-2.7-2.4-1.7H65zm16.4 0l1 2.8H86l-2.3 1.7.9 2.7-2.4-1.7-2.3 1.7.9-2.7-2.4-1.7h3zm-74 7l.8 2.8h3l-2.4 1.7.9 2.7-2.4-1.7L6 38.2l.9-2.7-2.4-1.7h3zm16.4 0l.9 2.8h2.9l-2.3 1.7.9 2.7-2.4-1.7-2.3 1.7.9-2.7-2.4-1.7h2.9zm16.5 0l.9 2.8H45l-2.4 1.7 1 2.7-2.4-1.7-2.4 1.7 1-2.7-2.4-1.7h2.9zm16.4 0l1 2.8h2.8l-2.3 1.7.9 2.7-2.4-1.7-2.3 1.7.9-2.7-2.4-1.7h3zm16.5 0l.9 2.8h2.9l-2.3 1.7.9 2.7-2.4-1.7-2.3 1.7.9-2.7-2.4-1.7h2.9zm16.5 0l.9 2.8h2.9L92 35.5l1 2.7-2.4-1.7-2.4 1.7 1-2.7-2.4-1.7h2.9zm-74.1 7l.9 2.8h2.9l-2.4 1.7 1 2.7-2.4-1.7-2.4 1.7 1-2.7-2.4-1.7h2.9zm16.4 0l1 2.8h2.8l-2.3 1.7.9 2.7-2.4-1.7-2.3 1.7.9-2.7-2.4-1.7h3zm16.5 0l.9 2.8h2.9l-2.3 1.7.9 2.7-2.4-1.7-2.3 1.7.9-2.7-2.4-1.7h2.9zm16.5 0l.9 2.8h2.9l-2.4 1.7 1 2.7-2.4-1.7-2.4 1.7 1-2.7-2.4-1.7H65zm16.4 0l1 2.8H86l-2.3 1.7.9 2.7-2.4-1.7-2.3 1.7.9-2.7-2.4-1.7h3zm-74 7l.8 2.8h3l-2.4 1.7.9 2.7-2.4-1.7L6 52.2l.9-2.7-2.4-1.7h3zm16.4 0l.9 2.8h2.9l-2.3 1.7.9 2.7-2.4-1.7-2.3 1.7.9-2.7-2.4-1.7h2.9zm16.5 0l.9 2.8H45l-2.4 1.7 1 2.7-2.4-1.7-2.4 1.7 1-2.7-2.4-1.7h2.9zm16.4 0l1 2.8h2.8l-2.3 1.7.9 2.7-2.4-1.7-2.3 1.7.9-2.7-2.4-1.7h3zm16.5 0l.9 2.8h2.9l-2.3 1.7.9 2.7-2.4-1.7-2.3 1.7.9-2.7-2.4-1.7h2.9zm16.5 0l.9 2.8h2.9L92 49.5l1 2.7-2.4-1.7-2.4 1.7 1-2.7-2.4-1.7h2.9zm-74.1 7l.9 2.8h2.9l-2.4 1.7 1 2.7-2.4-1.7-2.4 1.7 1-2.7-2.4-1.7h2.9zm16.4 0l1 2.8h2.8l-2.3 1.7.9 2.7-2.4-1.7-2.3 1.7.9-2.7-2.4-1.7h3zm16.5 0l.9 2.8h2.9l-2.3 1.7.9 2.7-2.4-1.7-2.3 1.7.9-2.7-2.4-1.7h2.9zm16.5 0l.9 2.8h2.9l-2.4 1.7 1 2.7-2.4-1.7-2.4 1.7 1-2.7-2.4-1.7H65zm16.4 0l1 2.8H86l-2.3 1.7.9 2.7-2.4-1.7-2.3 1.7.9-2.7-2.4-1.7h3zm-74 7l.8 2.8h3l-2.4 1.7.9 2.7-2.4-1.7L6 66.2l.9-2.7-2.4-1.7h3zm16.4 0l.9 2.8h2.9l-2.3 1.7.9 2.7-2.4-1.7-2.3 1.7.9-2.7-2.4-1.7h2.9zm16.5 0l.9 2.8H45l-2.4 1.7 1 2.7-2.4-1.7-2.4 1.7 1-2.7-2.4-1.7h2.9zm16.4 0l1 2.8h2.8l-2.3 1.7.9 2.7-2.4-1.7-2.3 1.7.9-2.7-2.4-1.7h3zm16.5 0l.9 2.8h2.9l-2.3 1.7.9 2.7-2.4-1.7-2.3 1.7.9-2.7-2.4-1.7h2.9zm16.5 0l.9 2.8h2.9L92 63.5l1 2.7-2.4-1.7-2.4 1.7 1-2.7-2.4-1.7h2.9z"
-                                                    transform="scale(3.9385)"
-                                                />
-                                            </g>
-                                        </svg>
-                                        English (US)
-                                    </div>
-                                </a>
-                            </li>
-                            <li>
-                                <a
-                                    href="#"
-                                    class="block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:text-white dark:hover:bg-gray-600"
-                                    role="menuitem"
-                                >
-                                    <div class="inline-flex items-center">
-                                        <svg
-                                            aria-hidden="true"
-                                            class="h-3.5 w-3.5 rounded-full mr-2"
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            id="flag-icon-css-de"
-                                            viewBox="0 0 512 512"
-                                        >
-                                            <path fill="#ffce00" d="M0 341.3h512V512H0z" />
-                                            <path d="M0 0h512v170.7H0z" />
-                                            <path fill="#d00" d="M0 170.7h512v170.6H0z" />
-                                        </svg>
-                                        Deutsch
-                                    </div>
-                                </a>
-                            </li>
-                            <li>
-                                <a
-                                    href="#"
-                                    class="block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:text-white dark:hover:bg-gray-600"
-                                    role="menuitem"
-                                >
-                                    <div class="inline-flex items-center">
-                                        <svg
-                                            aria-hidden="true"
-                                            class="h-3.5 w-3.5 rounded-full mr-2"
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            id="flag-icon-css-it"
-                                            viewBox="0 0 512 512"
-                                        >
-                                            <g fill-rule="evenodd" stroke-width="1pt">
-                                                <path fill="#fff" d="M0 0h512v512H0z" />
-                                                <path fill="#009246" d="M0 0h170.7v512H0z" />
-                                                <path fill="#ce2b37" d="M341.3 0H512v512H341.3z" />
-                                            </g>
-                                        </svg>
-                                        Italiano
-                                    </div>
-                                </a>
-                            </li>
-                            <li>
-                                <a
-                                    href="#"
-                                    class="block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 dark:hover:text-white dark:text-gray-300 dark:hover:bg-gray-600"
-                                    role="menuitem"
-                                >
-                                    <div class="inline-flex items-center">
-                                        <svg
-                                            aria-hidden="true"
-                                            class="h-3.5 w-3.5 rounded-full mr-2"
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            xmlns:xlink="http://www.w3.org/1999/xlink"
-                                            id="flag-icon-css-cn"
-                                            viewBox="0 0 512 512"
-                                        >
-                                            <defs>
-                                                <path
-                                                    id="a"
-                                                    fill="#ffde00"
-                                                    d="M1-.3L-.7.8 0-1 .6.8-1-.3z"
-                                                />
-                                            </defs>
-                                            <path fill="#de2910" d="M0 0h512v512H0z" />
-                                            <use
-                                                width="30"
-                                                height="20"
-                                                transform="matrix(76.8 0 0 76.8 128 128)"
-                                                xlink:href="#a"
-                                            />
-                                            <use
-                                                width="30"
-                                                height="20"
-                                                transform="rotate(-121 142.6 -47) scale(25.5827)"
-                                                xlink:href="#a"
-                                            />
-                                            <use
-                                                width="30"
-                                                height="20"
-                                                transform="rotate(-98.1 198 -82) scale(25.6)"
-                                                xlink:href="#a"
-                                            />
-                                            <use
-                                                width="30"
-                                                height="20"
-                                                transform="rotate(-74 272.4 -114) scale(25.6137)"
-                                                xlink:href="#a"
-                                            />
-                                            <use
-                                                width="30"
-                                                height="20"
-                                                transform="matrix(16 -19.968 19.968 16 256 230.4)"
-                                                xlink:href="#a"
-                                            />
-                                        </svg>
-                                    </div>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
                 </div>
             </aside>
 
             <main class="md:ml-64 h-auto mt-20">
-                {{-- Form --}}
-                <form action="/carrier" method="post" id="add-carrier-form">
-                    <section class="bg-white dark:bg-gray-900 mb-10">
+                {{-- Carriers --}}
+                <section class="bg-white dark:bg-gray-900 mb-10">
+                    <form action="/carrier" method="post" id="add-carrier-form">
+                        @csrf
                         <div class="px-8">
-                            <h2 class="mb-4 text-xl font-bold text-gray-900 dark:text-white">Add a new carrier</h2>
-                            <form action="#">
-                                @csrf
-                                <div class="grid gap-4 sm:grid-cols-2 sm:gap-6">
-                                    <div class="w-full relative">
-                                        <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Name</label>
-                                        <input type="text" name="name" id="name" aria-describedby="name_success" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Type carrier name" required value="{{ $carrier->name ?? '' }}">
-                                    </div>
-                                    <div class="w-full relative">
-                                        <label for="dba" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">DBA</label>
-                                        <input type="text" name="dba" id="dba" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Carrier DBA" value="{{ $carrier->dba ?? '' }}">
-                                    </div>
-                                    <div class="w-full relative">
-                                        <label for="address-1" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Address 1</label>
-                                        <input type="text" name="address_1" id="address-1" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="123 Street" required value="{{ $carrier->address_1 ?? '' }}">
-                                    </div>
-                                    <div class="w-full relative">
-                                        <label for="address-2" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Address 2</label>
-                                        <input type="text" name="address_2" id="address-2" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Suite B" value="{{ $carrier->address_2 ?? '' }}">
-                                    </div>
-                                    <div class="w-full relative">
-                                        <label for="city" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">City</label>
-                                        <input type="text" name="city" id="city" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Anywhere" required value="{{ $carrier->city ?? '' }}">
-                                    </div>
-                                    <div class="w-full relative">
-                                        <label for="state" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">State</label>
-                                        <select id="state" name="state" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" required value="{{ $carrier->state ?? '' }}">
-                                            <option value="">-- Select One --</option>
-                                            @foreach($states as $state)
-                                                <option value="{{ $state->abbreviation }}" {{ ($carrier->state ?? '') == $state->abbreviation ? 'selected' : '' }}>{{ $state->state }}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                    <div class="w-full relative">
-                                        <label for="zip" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Zip</label>
-                                        <input type="text" name="zip" id="zip" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="12345-5678" required value="{{ $carrier->zip ?? '' }}">
-                                    </div>
-                                    <div class="w-full relative">
-                                        <label for="phone" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Phone</label>
-                                        <input type="text" name="phone" id="phone" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="___-___-____" required value="{{ $carrier->phone ?? '' }}">
-                                    </div>
-                                    <div class="w-full relative">
-                                        <label class="block mb-4 text-sm font-medium text-gray-900 dark:text-white">Active?</label>
-                                        <div class="flex items-center">
-                                            <label for="active-yes" class="mr-2 text-sm font-medium text-gray-900 dark:text-gray-300">Yes</label>
-                                            <input id="active-yes" type="radio" value="1" name="active" class="w-3 h-3 mr-4 bg-gray-50 border border-gray-300 text-primary-700 text-sm rounded-md focus:ring-primary-600 focus:border-primary-600 block p-[8px] dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" {{ isset($carrier) ? ($carrier->active == 1 ? 'checked' : '') : 'checked' }}>
+                            <h2 id="carriers-heading" class="mb-4 text-xl font-bold text-gray-900 dark:text-white">
+                                {{ isset($carrier) ? $carrier->name : 'Add a new carrier' }}
+                            </h2>
+                            <div class="grid gap-4 sm:grid-cols-2 sm:gap-6">
+                                <div class="w-full relative">
+                                    <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Name</label>
+                                    <input type="text" name="name" id="name" aria-describedby="name_success" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Type carrier name" required value="{{ $carrier->name ?? '' }}">
+                                </div>
+                                <div class="w-full relative">
+                                    <label for="dba" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">DBA</label>
+                                    <input type="text" name="dba" id="dba" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Carrier DBA" value="{{ $carrier->dba ?? '' }}">
+                                </div>
+                                <div class="w-full relative">
+                                    <label for="address-1" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Address 1</label>
+                                    <input type="text" name="address_1" id="address-1" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="123 Street" required value="{{ $carrier->address_1 ?? '' }}">
+                                </div>
+                                <div class="w-full relative">
+                                    <label for="address-2" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Address 2</label>
+                                    <input type="text" name="address_2" id="address-2" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Suite B" value="{{ $carrier->address_2 ?? '' }}">
+                                </div>
+                                <div class="w-full relative">
+                                    <label for="city" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">City</label>
+                                    <input type="text" name="city" id="city" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Anywhere" required value="{{ $carrier->city ?? '' }}">
+                                </div>
+                                <div class="w-full relative">
+                                    <label for="state" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">State</label>
+                                    <select id="state" name="state" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" required value="{{ $carrier->state ?? '' }}">
+                                        <option value="">-- Select One --</option>
+                                        @foreach($states as $state)
+                                            <option value="{{ $state->abbreviation }}" {{ ($carrier->state ?? '') == $state->abbreviation ? 'selected' : '' }}>{{ $state->state }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="w-full relative">
+                                    <label for="zip" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Zip</label>
+                                    <input type="text" name="zip" id="zip" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="12345-5678" required value="{{ $carrier->zip ?? '' }}">
+                                </div>
+                                <div class="w-full relative">
+                                    <label for="phone" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Phone</label>
+                                    <input type="text" name="phone" id="phone" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="___-___-____" required value="{{ $carrier->phone ?? '' }}">
+                                </div>
+                                <div class="w-full relative">
+                                    <label class="block mb-4 text-sm font-medium text-gray-900 dark:text-white">Active?</label>
+                                    <div class="flex items-center">
+                                        <label for="active-yes" class="mr-2 text-sm font-medium text-gray-900 dark:text-gray-300">Yes</label>
+                                        <input id="active-yes" type="radio" value="1" name="active" class="w-3 h-3 mr-4 bg-gray-50 border border-gray-300 text-primary-700 text-sm rounded-md focus:ring-primary-600 focus:border-primary-600 block p-[8px] dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" {{ isset($carrier) ? ($carrier->active == 1 ? 'checked' : '') : 'checked' }}>
 
-                                            <label for="active-no" class="mr-2 text-sm font-medium text-gray-900 dark:text-gray-300">No</label>
-                                            <input id="active-no" type="radio" value="0" name="active" class="w-3 h-3 bg-gray-50 border border-gray-300 text-primary-700 text-sm rounded-md focus:ring-primary-600 focus:border-primary-600 block p-[8px] dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
-                                        </div>
-                                    </div>
-                                    <div class="sm:col-span-2 relative">
-                                        <label for="notes" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Notes</label>
-                                        <textarea id="notes" name="notes" rows="8" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Your notes here"
-                                        >{{ $carrier->notes ?? '' }}</textarea>
-                                    </div>
-                                    <div id="coverages-grouping" class="sm:col-span-2 relative">
-                                        <div class="flex items-center">
-                                            <label for="coverages-home" class="text-sm font-medium text-gray-900 dark:text-gray-300 mr-2">Home</label>
-                                            <input id="coverages-home" type="checkbox" name="coverages[home]" class="carrier-coverage-group w-4 h-4 mr-3 text-primary-700 bg-gray-50 rounded-sm border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" {{ isset($carrier) && $carrier->carrierCoverages->where('coverage', 'Home')->count() ? 'checked': '' }}>
-
-                                            <label for="coverages-auto" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300 mr-2">Auto</label>
-                                            <input id="coverages-auto" type="checkbox" name="coverages[auto]" class="carrier-coverage-group w-4 h-4 mr-3 text-primary-700 bg-gray-50 rounded-sm border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" {{ isset($carrier) && $carrier->carrierCoverages->where('coverage', 'Auto')->count() ? 'checked': '' }}>
-
-                                            <label for="coverages-life" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300 mr-2">Life</label>
-                                            <input id="coverages-life" type="checkbox" name="coverages[life]" class="carrier-coverage-group w-4 h-4 text-primary-700 bg-gray-50 rounded-sm border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" {{ isset($carrier) && $carrier->carrierCoverages->where('coverage', 'Life')->count() ? 'checked': '' }}>
-                                        </div>
+                                        <label for="active-no" class="mr-2 text-sm font-medium text-gray-900 dark:text-gray-300">No</label>
+                                        <input id="active-no" type="radio" value="0" name="active" class="w-3 h-3 bg-gray-50 border border-gray-300 text-primary-700 text-sm rounded-md focus:ring-primary-600 focus:border-primary-600 block p-[8px] dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
                                     </div>
                                 </div>
-                                <button type="submit" class="inline-flex items-center px-5 py-2.5 mt-4 sm:mt-6 text-sm font-medium text-center text-white bg-primary-700 rounded-lg focus:ring-4 focus:ring-primary-200 dark:focus:ring-primary-900 hover:bg-primary-800">
-                                    Add carrier
-                                </button>
-                            </form>
+                                <div class="sm:col-span-2 relative">
+                                    <label for="notes" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Notes</label>
+                                    <textarea id="notes" name="notes" rows="8" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Your notes here"
+                                    >{{ $carrier->notes ?? '' }}</textarea>
+                                </div>
+                                <div id="coverages-grouping" class="sm:col-span-2 relative">
+                                    <div class="flex items-center">
+                                        <label for="coverages-home" class="text-sm font-medium text-gray-900 dark:text-gray-300 mr-2">Home</label>
+                                        <input id="coverages-home" type="checkbox" name="coverages[home]" class="carrier-coverage-group w-4 h-4 mr-3 text-primary-700 bg-gray-50 rounded-sm border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" {{ isset($carrier) && $carrier->carrierCoverages->where('coverage', 'Home')->count() ? 'checked': '' }}>
+
+                                        <label for="coverages-auto" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300 mr-2">Auto</label>
+                                        <input id="coverages-auto" type="checkbox" name="coverages[auto]" class="carrier-coverage-group w-4 h-4 mr-3 text-primary-700 bg-gray-50 rounded-sm border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" {{ isset($carrier) && $carrier->carrierCoverages->where('coverage', 'Auto')->count() ? 'checked': '' }}>
+
+                                        <label for="coverages-life" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300 mr-2">Life</label>
+                                        <input id="coverages-life" type="checkbox" name="coverages[life]" class="carrier-coverage-group w-4 h-4 text-primary-700 bg-gray-50 rounded-sm border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" {{ isset($carrier) && $carrier->carrierCoverages->where('coverage', 'Life')->count() ? 'checked': '' }}>
+                                    </div>
+                                </div>
+                            </div>
+                            <button id="carrier-submit-button" type="submit" class="inline-flex items-center px-5 py-2.5 mt-4 sm:mt-6 text-sm font-medium text-center text-white bg-primary-700 rounded-lg focus:ring-4 focus:ring-primary-200 dark:focus:ring-primary-900 hover:bg-primary-800 disabled:cursor-default disabled:pointer-events-none disabled:opacity-50">
+                                {{ isset($carrier) ? 'Update carrier' : 'Add carrier' }}
+                            </button>
                         </div>
-                    </section>
-                </form>
+                    </form>
+                </section>
                 {{-- Map --}}
                 <section>
                     <div class="px-8">

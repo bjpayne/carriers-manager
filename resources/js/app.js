@@ -1,5 +1,6 @@
 import './bootstrap';
 import 'flowbite';
+import {Dismiss} from "flowbite";
 import {statesData} from './statesData.js';
 import $ from 'jquery';
 window.$ = $;
@@ -7,14 +8,17 @@ import validate from 'jquery-validation';
 import mask from 'jquery-mask-plugin';
 import _ from 'lodash';
 
+let mapMarkers = {};
+let allCarriers = [];
+
 let currentCarrier = (function () {
     let pathName = window.location.pathname;
 
     let regexp = /(\/carrier\/)([0-9]*)/gm;
     let groups = [...pathName.matchAll(regexp)];
 
-    if (groups.length === 2) {
-        return groups[1];
+    if (groups.length > 0 && groups[0].length > 0) {
+        return groups[0][2];
     }
 
     return null;
@@ -60,12 +64,14 @@ axios.get('/carriers', )
                 loadCarrier(carrier);
             });
 
-            if (currentCarrier && currentCarrier === carrier.id) {
-                mapMarker.openPopup(popup);
-            }
-
+            mapMarkers[carrier.id] = mapMarker;
             mapMarker.addTo(map);
+            allCarriers.push(carrier);
         });
+
+        if (mapMarkers.hasOwnProperty(currentCarrier)) {
+            mapMarkers[currentCarrier].openPopup();
+        }
 
         loadCoverages(map);
 });
@@ -156,6 +162,14 @@ function loadCarrier(carrier) {
     const url = `/carrier/${carrier.id}`;
 
     history.pushState("", "", url);
+
+    $('#carriers-heading').html(`${carrier.name}`);
+    $('#carrier-submit-button').html('Update carrier');
+
+    let form = $('#add-carrier-form');
+
+    form.prop('action', `/carrier/${carrier.id}`);
+    $('<input type="hidden" name="_method" value="PUT">').prependTo(form);
 }
 
 function handleCoveragesGroupValidation(form) {
@@ -173,8 +187,6 @@ function handleCoveragesGroupValidation(form) {
     return true;
 }
 
-console.log(currentCarrier);
-
 $.validator.messages.required = 'required';
 
 $('#phone').mask('000-000-0000', {placeholder: '___-___-____'});
@@ -189,6 +201,87 @@ $('#add-carrier-form').validate({
     submitHandler: function(form) {
         form = $(form);
 
-        return handleCoveragesGroupValidation(form);
+        if (! handleCoveragesGroupValidation(form)) {
+            return false;
+        }
+
+        form.find('button[type=submit]').prop('disabled', true);
+        form.find('button[type=submit]').html('Updating carrier...');
+
+        axios({
+            method: 'POST',
+            url: `/carrier/${currentCarrier}`,
+            data: form.serialize(),
+        }).then(function () {
+            let toast = $(`<div id="toast-simple" class="z-[100] fixed top-[5%] right-5 flex items-center w-full max-w-xs p-4 space-x-4 rtl:space-x-reverse text-gray-500 bg-white divide-x rtl:divide-x-reverse divide-gray-200 rounded-lg shadow-md dark:text-gray-400 dark:divide-gray-700 dark:bg-gray-800" role="alert">
+                <div class="inline-flex items-center justify-center shrink-0 w-8 h-8 text-green-500 bg-green-100 rounded-lg dark:bg-green-800 dark:text-green-200">
+                    <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 8.207-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 0 1 1.414-1.414L9 10.586l3.293-3.293a1 1 0 0 1 1.414 1.414Z"/>
+                    </svg>
+                    <span class="sr-only">Check icon</span>
+                </div>
+                <div class="ps-4 text-sm font-normal">Carrier updated</div>
+            </div>`);
+
+            toast.prependTo($('body'));
+
+            const options = {
+                transition: 'transition-opacity',
+                duration: 1000,
+                timing: 'ease-out',
+                onHide: () => {
+                    toast.remove();
+                }
+            };
+
+            // instance options object
+            const instanceOptions = {
+                id: toast.prop('id'),
+                override: true
+            };
+
+            let dismiss = new Dismiss(toast.get(0), null, options, instanceOptions);
+
+            window.setTimeout(function() {
+                dismiss.hide()
+            }, 3000);
+        }).finally(function() {
+            form.find('button[type=submit]').html('Update carrier');
+            form.find('button[type=submit]').prop('disabled', false);
+        });
+
+        return false;
     }
+});
+
+$('#topbar-search').on('keyup', function() {
+    let input = $(this);
+    let searchDropdown = $('#search-dropdown');
+
+    if (input.val().length === 0) {
+        searchDropdown.addClass('hidden');
+        searchDropdown.find('ul').html('');
+
+        return;
+    }
+
+    let filteredCarriers = allCarriers.filter(function (carrier) {
+        return carrier.name.toLowerCase().includes(input.val().toLowerCase());
+    });
+
+
+    searchDropdown.find('ul').html('');
+    searchDropdown.removeClass('hidden');
+
+    if (filteredCarriers.length === 0) {
+        $(`<li><a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">No Results</a></li>`)
+            .appendTo(searchDropdown.find('ul'));
+
+        return;
+    }
+
+    filteredCarriers.forEach(function (_carrier) {
+        $(`<li><a href="#" onclick="loadCarrier(${_carrier.id}); return false;" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">${_carrier.name}</a></li>`)
+            .appendTo(searchDropdown.find('ul'));
+    });
 });

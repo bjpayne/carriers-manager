@@ -36,7 +36,7 @@ Route::post('/carrier', function (Request $request) {
     $carrier->notes     = $request->input('notes');
     $carrier->active    = $request->input('active', 1);
 
-    $address = implode(' ', array_filter([$request->input('address_1'), $request->input('address_2'), $request->input('city'), $request->input('state'), $request->input('zip')]));
+    $address = implode(' ', array_filter([$request->input('address_1'), $request->input('city'), $request->input('state'), $request->input('zip')]));
 
     $results = app("geocoder")
         ->using('mapbox')
@@ -75,6 +75,64 @@ Route::get('/carrier/{id}', function (string $id) {
     $carrier = Carriers::with('carrierCoverages')->find($id);
 
     return view('home', compact('states', 'carrier'));
+})->where('id', '[0-9]+')
+    ->name('carrier');
+
+Route::put('/carrier/{id}', function (Request $request, $id) {
+    $carrier = Carriers::with('carrierCoverages')
+        ->find($id);
+
+    if (! $carrier) {
+        return response()
+            ->redirectToRoute('home');
+    }
+
+    $carrier->name      = $request->input('name');
+    $carrier->dba       = $request->input('dba');
+    $carrier->address_1 = $request->input('address_1');
+    $carrier->address_2 = $request->input('address_2');
+    $carrier->city      = $request->input('city');
+    $carrier->state     = $request->input('state');
+    $carrier->zip       = $request->input('zip');
+    $carrier->phone     = $request->input('phone');
+    $carrier->notes     = $request->input('notes');
+    $carrier->active    = $request->input('active', 1);
+
+    $address = implode(' ', array_filter([$request->input('address_1'), $request->input('city'), $request->input('state'), $request->input('zip')]));
+
+    $results = app("geocoder")
+        ->using('mapbox')
+        ->doNotCache()
+        ->geocode($address)
+        ->get();
+
+    if (! $results->isEmpty()) {
+        // Geocoder\Model\Coordinates::toArray [lat, long]
+        $coordinates = $results->get(0)->getCoordinates()->toArray();
+
+        $carrier->lat = $coordinates[0];
+        $carrier->long = $coordinates[1];
+    }
+
+    $saved = $carrier->save();
+
+    if ($saved) {
+        if ($carrier->carrierCoverages->count() > 0) {
+            $carrier->carrierCoverages()->delete();
+        }
+
+        foreach ($request->input('coverages') as $coverage => $_) {
+            $carrierCoverage = new CarrierCoverages();
+
+            $carrierCoverage->carrier_id = $carrier->id;
+            $carrierCoverage->coverage = ucfirst(strtolower($coverage));
+
+            $carrierCoverage->save();
+        }
+    }
+
+    return response()
+        ->redirectToRoute('carrier', compact('id'));
 })->where('id', '[0-9]+');
 
 Route::get('/coverages', function () {
