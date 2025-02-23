@@ -363,6 +363,7 @@ $('#search-dropdown').on('click', 'a', function () {
     })[0];
 
     loadCarrier(carrier);
+    reloadCarrierMapMarker(carrier);
 
     $('#topbar-search').val('');
 
