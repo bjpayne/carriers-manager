@@ -228,9 +228,15 @@ $('#add-carrier-form').validate({
 
         axios({
             method: 'POST',
-            url: `/carrier/${currentCarrier}`,
+            url: form.prop('action'),
             data: form.serialize(),
-        }).then(function () {
+        }).then(function (response) {
+            if (! currentCarrier) {
+                window.location.href = `/carrier/${response.data.id}`;
+
+                return false;
+            }
+
             let toast = $(`<div id="toast-simple" class="z-[100] fixed top-[5%] right-5 flex items-center w-full max-w-xs p-4 space-x-4 rtl:space-x-reverse text-gray-500 bg-white divide-x rtl:divide-x-reverse divide-gray-200 rounded-lg shadow-md dark:text-gray-400 dark:divide-gray-700 dark:bg-gray-800" role="alert">
                 <div class="inline-flex items-center justify-center shrink-0 w-8 h-8 text-green-500 bg-green-100 rounded-lg dark:bg-green-800 dark:text-green-200">
                     <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">

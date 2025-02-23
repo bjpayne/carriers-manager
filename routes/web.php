@@ -73,8 +73,7 @@ Route::post('/carrier', function (Request $request) {
         }
     }
 
-    return response()
-        ->redirectToRoute('home');
+    return response()->json($carrier);
 });
 
 Route::get('/carrier/{id}', function (string $id) {
@@ -147,7 +146,7 @@ Route::put('/carrier/{id}', function (Request $request, $id) {
     }
 
     return response()
-        ->redirectToRoute('carrier', compact('id'));
+        ->json($carrier);
 })->where('id', '[0-9]+');
 
 Route::get('/coverages', function () {
