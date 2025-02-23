@@ -809,7 +809,7 @@
             <main class="md:ml-64 h-auto mt-20">
                 {{-- Carriers --}}
                 <section class="bg-white dark:bg-gray-900 mb-10">
-                    <form action="/carrier" method="post" id="add-carrier-form">
+                    <form action="{{ isset($carrier) ? ('/carrier/'.$carrier->id) : '/carrier' }}" method="post" id="add-carrier-form">
                         @csrf
                         @isset($carrier)
                             @method('PUT')
